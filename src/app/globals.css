@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+.mainContainer {
+  @apply p-8 grid grid-cols-10 justify-center;
+}
+
+.navText {
+  @apply font-bold;
+}
+
+.navLine {
+  @apply m-auto w-0 h-0.5 bg-white transition-all duration-300;
+}
+
+.startPageHotelImg {
+  @apply object-cover h-60 w-[15rem] rounded-xl transition-all duration-300 transform hover:translate-y-[-1rem] mb-4;
+}
