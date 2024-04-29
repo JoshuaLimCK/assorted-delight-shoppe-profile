@@ -9,6 +9,7 @@ import { error } from "console";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
+import { redirect } from "next/navigation";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -41,8 +42,9 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       email,
       password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
+    }).catch((error) => {
+      console.log(error);
     });
-    return { success: "User logged in successfully" };
   } catch (errorr) {
     if (errorr instanceof AuthError) {
       switch (errorr.type) {
@@ -54,4 +56,6 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     }
     throw error;
   }
+  redirect(DEFAULT_LOGIN_REDIRECT);
+  return { success: "User logged in successfully" };
 };

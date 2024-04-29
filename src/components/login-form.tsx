@@ -4,6 +4,8 @@ import * as z from "zod";
 import { signal } from "@preact/signals";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { db } from "@/lib/db";
+import { useRouter } from "next/navigation";
+
 import {
   Form,
   FormControl,
@@ -21,9 +23,11 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useState, useTransition } from "react";
 import { login } from "@/app/actions/login";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export const LoginForm = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
@@ -43,10 +47,16 @@ export const LoginForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(values).then((res) => {
-        setSuccess(res.success ?? "");
-        setError(res.error ?? "");
-      });
+      login(values)
+        .then((data) => {
+          if (data) {
+            setSuccess(data.success ?? "");
+            setError(data.error ?? "");
+          }
+        })
+        .catch((error) => {
+          return { error: "Something went wrong!" };
+        });
     });
   };
   return (
@@ -94,6 +104,14 @@ export const LoginForm = () => {
                           type="password"
                         />
                       </FormControl>
+                      <Button
+                        size="sm"
+                        variant="link"
+                        asChild
+                        className="font-normal px-0"
+                      >
+                        <Link href="/auth/reset">Forgot Password?</Link>
+                      </Button>
                       <FormMessage />
                     </FormItem>
                   )}

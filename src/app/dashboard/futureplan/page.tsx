@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { futurePlanText } from "../../constants";
+import { futurePlanText } from "@/app/constants";
 import { primamryFont } from "@/fonts";
 function FuturePlan() {
   return (

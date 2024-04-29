@@ -22,13 +22,15 @@ export const {
       });
     },
   },
-  secret: process.env.NEXT_PUBLIC_SECRET,
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
 
       const existingUser = await getUserById(user.id as string);
+
       if (!existingUser?.emailVerified) return false;
+      console.log(user);
+
       return true;
     },
     async session({ token, session }) {
